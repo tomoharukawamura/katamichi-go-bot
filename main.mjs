@@ -9,9 +9,14 @@ const app = express()
 const port = Number(process.env.PORT) || 3000
 app.listen(port, async () => {
     console.log(`Server is running on port ${port}`);
-    await lineClient.pushMessage(process.env.LINE_USER_ID, {
-      type: 'text',
-      text: 'bot started'
+    await lineClient.pushMessage({
+      to: process.env.LINE_GROUP_ID,
+      messages: [
+        {
+          type: 'text',
+          text: `bot started`
+        }
+      ]
     })
     const carManager = new CarManager()
     await carManager.getCars()

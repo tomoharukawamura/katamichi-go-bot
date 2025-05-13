@@ -1,0 +1,7 @@
+{
+    "name": "katamichi-go-bot",
+    "script": "node main.mjs",
+    "env": {
+        "PORT": 5000
+    }
+}

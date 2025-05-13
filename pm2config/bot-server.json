@@ -1,0 +1,4 @@
+{
+    "name": "bot-server",
+    "script": "node bot-server.mjs"
+}

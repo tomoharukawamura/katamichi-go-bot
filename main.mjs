@@ -9,8 +9,9 @@ const app = express()
 const port = Number(process.env.PORT) || 3000
 app.listen(port, async () => {
     console.log(`Server is running on port ${port}`);
+    console.log(process.env.LINE_CHANNEL_ACCESS_TOKEN);
     await lineClient.pushMessage({
-      to: process.env.LINE_GROUP_ID,
+      to: process.env.LINE_USER_ID,
       messages: [
         {
           type: 'text',

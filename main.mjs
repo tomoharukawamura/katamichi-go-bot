@@ -1,30 +1,42 @@
 import express from 'express'
-import { config } from 'dotenv'
 import { CarManager } from './lib/car-manager.mjs'
-import { line, lineClient } from './lib/messaging-api-client.mjs'
-
-config()
+import { createLineClient } from './lib/messaging-api-client.mjs'
 
 const app = express()
 const port = Number(process.env.PORT) || 3000
+const startArea = process.env.STRAT_AREA
+const returnArea = process.env.RETURN_AREA
+const carManager = new CarManager(startArea, returnArea)
+
 app.listen(port, async () => {
     console.log(`Server is running on port ${port}`);
-    console.log(process.env.LINE_CHANNEL_ACCESS_TOKEN);
-    await lineClient.pushMessage({
-      to: process.env.LINE_USER_ID,
-      messages: [
-        {
-          type: 'text',
-          text: `bot started`
+
+    await carManager.getCars({ resetNewCars: false, resetSoldCars: false })
+    while (true) {
+      await carManager.getCars({ resetNewCars: true, resetSoldCars: true })
+
+      if (!carManager.newCars.length && !carManager.soldOut.length) {
+        setTimeout(() => {
+          Promise.resolve()
+        }, 2000)
+      } else {
+        console.log('push message')
+        for await (const nc of carManager.newCars){
+          createLineClient(nc.startArea, nc.returnArea).pushMessage({
+            to: process.env[`LINE_GROUP_ID_${nc.startArea}_${nc.returnArea}`],
+            messages: [carManager.createMessage(nc, 'new')]
+          })
         }
-      ]
-    })
-    const carManager = new CarManager()
-    await carManager.getCars()
-    setInterval(async () => {
-      await carManager.getCars()
-      if (!carManager.newCars.length || !carManager.soldOut.length) return
-      await carManager.pushLINEMessage()
-    }, 1000 * 2) // 2sごとに実行
+        carManager.newCars = []
+
+        for await (const nc of carManager.soldOut){
+          createLineClient(nc.startArea, nc.returnArea).pushMessage({
+            to: process.env[`LINE_GROUP_ID_SOLD_${nc.startArea}_${nc.returnArea}`],
+            messages: [carManager.createMessage(nc, 'soldOut')]
+          })
+        }
+        carManager.soldOut = []
+      }
+    }
   }
 );

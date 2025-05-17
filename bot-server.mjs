@@ -1,10 +1,7 @@
 import express from 'express';
-import { config as dotenvConfig } from 'dotenv';
-import { lineClient as client, line } from './lib/messaging-api-client.mjs';
+import { createLineClient, line } from './lib/messaging-api-client.mjs';
 import { extractData } from './lib/extract-data.mjs';
 import { CarInfomation } from './lib/car-tags.mjs';
-
-dotenvConfig()
 
 const botServer = express();
 
@@ -34,7 +31,7 @@ const handleEvent = async (event) => {
   }
 
   if (event.message.text === 'get group id') {
-    return await client.replyMessage({
+    return await createLineClient('5', '3').replyMessage({
       replyToken: event.replyToken,
       messages: [
         {
@@ -45,23 +42,23 @@ const handleEvent = async (event) => {
     });
   }
   
-  // 通常の検索
-  const message = event.message.text;
-  // メッセージをjsonに変換
-  const { carName, startArea, returnArea, date, tags } = await extractData(message);
-  const params = {
-    carName,
-    startArea,
-    returnArea,
-    date,
-    tags
-  }
-  if (!carName && tags.length) {
-    params.carName = await carInfo.listCars(tags.join(','))
-  }
+  // // 通常の検索
+  // const message = event.message.text;
+  // // メッセージをjsonに変換
+  // const { carName, startArea, returnArea, date, tags } = await extractData(message);
+  // const params = {
+  //   carName,
+  //   startArea,
+  //   returnArea,
+  //   date,
+  //   tags
+  // }
+  // if (!carName && tags.length) {
+  //   params.carName = await carInfo.listCars(tags.join(','))
+  // }
   
 }
 
-botServer.listen(4545, () => {
-  console.log("bot server is running on port 4545");
+botServer.listen(3000, () => {
+  console.log("bot server is running on port 3000");
 })

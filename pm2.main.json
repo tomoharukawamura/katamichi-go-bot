@@ -1,0 +1,4 @@
+{
+  "name": "katamichi-go-notify",
+  "script": "npm run build"
+}

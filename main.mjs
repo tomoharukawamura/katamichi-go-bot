@@ -4,9 +4,7 @@ import { createLineClient } from './lib/messaging-api-client.mjs'
 
 const app = express()
 const port = Number(process.env.PORT) || 3000
-const startArea = process.env.STRAT_AREA
-const returnArea = process.env.RETURN_AREA
-const carManager = new CarManager(startArea, returnArea)
+const carManager = new CarManager()
 
 app.listen(port, async () => {
     console.log(`Server is running on port ${port}`);

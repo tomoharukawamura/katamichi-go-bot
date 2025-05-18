@@ -1,6 +1,7 @@
 import express from 'express'
 import { CarManager } from './lib/car-manager.mjs'
-import { createLineClient } from './lib/messaging-api-client.mjs'
+import { createMessage } from './lib/create-flex-message.mjs'
+import { Worker } from 'worker_threads'
 
 const app = express()
 const port = Number(process.env.PORT) || 3000
@@ -18,22 +19,22 @@ app.listen(port, async () => {
           Promise.resolve()
         }, 2000)
       } else {
-        console.log('push message')
-        for await (const nc of carManager.newCars){
-          createLineClient(nc.startArea, nc.returnArea).pushMessage({
-            to: process.env[`LINE_GROUP_ID_${nc.startArea}_${nc.returnArea}`],
-            messages: [carManager.createMessage(nc, 'new')]
+        if (carManager.newCars.length) {
+          const classifiedNewCars = carManager.classifyCars(carManager.newCars)
+          const newCarWorkers = classifiedNewCars.map(({ startArea, returnArea, cars }) => {
+            const messages = cars.map(car => createMessage(car, 'new'))
+            return new Worker('./lib/worker.mjs', { workerData: { startArea, returnArea, messages, type: 'new' }})
           })
+          carManager.newCars = []
         }
-        carManager.newCars = []
-
-        for await (const nc of carManager.soldOut){
-          createLineClient(nc.startArea, nc.returnArea).pushMessage({
-            to: process.env[`LINE_GROUP_ID_SOLD_${nc.startArea}_${nc.returnArea}`],
-            messages: [carManager.createMessage(nc, 'soldOut')]
+        if (carManager.soldOut.length) {
+          const classifiedSoldOutCars = carManager.classifyCars(carManager.soldOut)
+          const soldOutCarWorkers = classifiedSoldOutCars.map(({ startArea, returnArea, cars }) => {
+            const messages = cars.map(car => createMessage(car, 'soldOut'))
+            return new Worker('./lib/worker.mjs', { workerData: { startArea, returnArea, messages, type: 'soldOut' }})
           })
+          carManager.soldOut = []
         }
-        carManager.soldOut = []
       }
     }
   }

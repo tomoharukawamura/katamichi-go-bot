@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx env-cmd -f .env node test.mjs",
     "build": "npx env-cmd -f .env node main.mjs",
     "build:bot": "npx env-cmd -f .env node bot-server.mjs",
     "expose:bot": "npx localtunnel --port 3000"

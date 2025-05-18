@@ -1,3 +1,4 @@
 .env
-.test.js
+./test.mjs
 node_modules
+tmp.txt

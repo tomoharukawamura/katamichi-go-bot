@@ -28,7 +28,7 @@ import { Worker } from "worker_threads";
 const carManager = new CarManager()
 const testList = [
     {
-        carName: "アルファードHV",
+        carName: "GRヤリス",
         startShop: "東京駅八重洲口",
         returnShop: "東京駅八重洲口",
         condition: "新車",
@@ -48,7 +48,7 @@ const testList = [
         returnArea: "3"
     },
     {
-        carName: "トヨタ クラウン",
+        carName: "プリウスPHV",
         startShop: "東京駅八重洲口",
         returnShop: "東京駅八重洲口",
         condition: "新車",

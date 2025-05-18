@@ -1,6 +1,5 @@
 import express from 'express'
 import { CarManager } from './lib/car-manager.mjs'
-import { createMessage } from './lib/create-flex-message.mjs'
 import { Worker } from 'worker_threads'
 
 const app = express()
@@ -21,17 +20,15 @@ app.listen(port, async () => {
       } else {
         if (carManager.newCars.length) {
           const classifiedNewCars = carManager.classifyCars(carManager.newCars)
-          const newCarWorkers = classifiedNewCars.map(({ startArea, returnArea, cars }) => {
-            const messages = cars.map(car => createMessage(car, 'new'))
-            return new Worker('./lib/worker.mjs', { workerData: { startArea, returnArea, messages, type: 'new' }})
+          const newCarWorkers = classifiedNewCars.map(cnc => {
+            return new Worker('./lib/worker.mjs', { workerData: { ...cnc, type: 'new' }})
           })
           carManager.newCars = []
         }
         if (carManager.soldOut.length) {
           const classifiedSoldOutCars = carManager.classifyCars(carManager.soldOut)
-          const soldOutCarWorkers = classifiedSoldOutCars.map(({ startArea, returnArea, cars }) => {
-            const messages = cars.map(car => createMessage(car, 'soldOut'))
-            return new Worker('./lib/worker.mjs', { workerData: { startArea, returnArea, messages, type: 'soldOut' }})
+          const soldOutCarWorkers = classifiedSoldOutCars.map(csoc => {
+            return new Worker('./lib/worker.mjs', { workerData: { ...csoc, type: 'soldOut' }})
           })
           carManager.soldOut = []
         }

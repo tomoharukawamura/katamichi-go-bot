@@ -16,7 +16,7 @@ app.listen(port, async () => {
       if (!carManager.newCars.length && !carManager.soldOut.length) {
         setTimeout(() => {
           Promise.resolve()
-        }, 2000)
+        }, 1000 * 30)
       } else {
         if (carManager.newCars.length) {
           const classifiedNewCars = carManager.classifyCars(carManager.newCars)

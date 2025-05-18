@@ -27,16 +27,16 @@ import { Worker } from "worker_threads";
 
 const carManager = new CarManager()
 const testList = [
-    // {
-    //     carName: "トヨタ アクア",
-    //     startShop: "東京駅八重洲口",
-    //     returnShop: "東京駅八重洲口",
-    //     condition: "新車",
-    //     date: "2023/10/01 - 2023/10/31",
-    //     phone: "03-1234-5678",
-    //     startArea: "3",
-    //     returnArea: "5",
-    // }
+    {
+        carName: "アルファードHV",
+        startShop: "東京駅八重洲口",
+        returnShop: "東京駅八重洲口",
+        condition: "新車",
+        date: "2023/10/01 - 2023/10/31",
+        phone: "03-1234-5678",
+        startArea: "3",
+        returnArea: "5",
+    },
     {
         carName: "エスクァイア",
         startShop: "東京駅八重洲口",
@@ -47,16 +47,16 @@ const testList = [
         startArea: "5",
         returnArea: "3"
     },
-    // {
-    //     carName: "トヨタ プリウス",
-    //     startShop: "東京駅八重洲口",
-    //     returnShop: "東京駅八重洲口",
-    //     condition: "新車",
-    //     date: "2023/10/01 - 2023/10/31",
-    //     phone: "03-1234-5678",
-    //     startArea: "5",
-    //     returnArea: "3"
-    // }
+    {
+        carName: "トヨタ クラウン",
+        startShop: "東京駅八重洲口",
+        returnShop: "東京駅八重洲口",
+        condition: "新車",
+        date: "2023/10/01 - 2023/10/31",
+        phone: "03-1234-5678",
+        startArea: "5",
+        returnArea: "3"
+    }
 ]
 const result = carManager.classifyCars(testList)
 // console.log(result)
@@ -65,9 +65,8 @@ const result = carManager.classifyCars(testList)
 // })
 
 const classifiedNewCars = carManager.classifyCars(testList)
-const newCarWorkers = classifiedNewCars.map(({ startArea, returnArea, cars }) => {
-    const messages = cars.map(car => createMessage(car, 'new'))
-    return new Worker('./lib/worker.mjs', { workerData: { startArea, returnArea, messages, type: 'new' }})
+const newCarWorkers = classifiedNewCars.map((c) => {
+    return new Worker('./lib/worker.mjs', { workerData: { ...c, type: 'new' }})
 })
 carManager.newCars = []
 

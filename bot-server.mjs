@@ -31,7 +31,7 @@ const handleEvent = async (event) => {
   }
 
   if (event.message.text === 'get group id') {
-    return await createLineClient('5', '3').replyMessage({
+    return await createLineClient('3', '2').replyMessage({
       replyToken: event.replyToken,
       messages: [
         {

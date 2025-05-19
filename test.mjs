@@ -28,9 +28,9 @@ import { Worker } from "worker_threads";
 const carManager = new CarManager()
 const testList = [
     {
-        carName: "GRヤリス",
-        startShop: "トヨタモビリティサービス　成田空港店",
-        returnShop: "トヨタレンタリース新大阪",
+        carName: "アリオン",
+        startShop: "トヨタレンタリース鹿児島　鹿児島空港店",
+        returnShop: "トヨタレンタリース福岡",
         condition: "新車",
         date: "2023/10/01 - 2023/10/31",
         phone: "03-1234-5678",

@@ -48,7 +48,7 @@ const testList = [
         returnArea: "3"
     },
     {
-        carName: "プリウスPHV",
+        carName: "プリウスPHV 車両番号8643",
         startShop: "東京駅八重洲口",
         returnShop: "東京駅八重洲口",
         condition: "新車",

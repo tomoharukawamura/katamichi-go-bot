@@ -29,34 +29,34 @@ const carManager = new CarManager()
 const testList = [
     {
         carName: "GRヤリス",
-        startShop: "東京駅八重洲口",
-        returnShop: "東京駅八重洲口",
+        startShop: "トヨタモビリティサービス　成田空港店",
+        returnShop: "トヨタレンタリース新大阪",
         condition: "新車",
         date: "2023/10/01 - 2023/10/31",
         phone: "03-1234-5678",
         startArea: "3",
         returnArea: "5",
     },
-    {
-        carName: "エスクァイア",
-        startShop: "東京駅八重洲口",
-        returnShop: "トヨタモビリティサービス",
-        condition: "新車",
-        date: "2023/10/01 - 2023/10/31",
-        phone: "03-1234-5678",
-        startArea: "5",
-        returnArea: "3"
-    },
-    {
-        carName: "プリウスPHV 車両番号8643",
-        startShop: "東京駅八重洲口",
-        returnShop: "東京駅八重洲口",
-        condition: "新車",
-        date: "2023/10/01 - 2023/10/31",
-        phone: "03-1234-5678",
-        startArea: "5",
-        returnArea: "3"
-    }
+    // {
+    //     carName: "エスクァイア",
+    //     startShop: "トヨタレンタリース京都　西八条店",
+    //     returnShop: "トヨタモビリティサービス（返却可能店舗）",
+    //     condition: "新車",
+    //     date: "2023/10/01 - 2023/10/31",
+    //     phone: "03-1234-5678",
+    //     startArea: "5",
+    //     returnArea: "3"
+    // },
+    // {
+    //     carName: "プリウスPHV 車両番号8643",
+    //     startShop: "トヨタレンタリース大阪 堺店 ",
+    //     returnShop: "トヨタモビリティサービス",
+    //     condition: "新車",
+    //     date: "2023/10/01 - 2023/10/31",
+    //     phone: "03-1234-5678",
+    //     startArea: "5",
+    //     returnArea: "3"
+    // }
 ]
 const result = carManager.classifyCars(testList)
 // console.log(result)

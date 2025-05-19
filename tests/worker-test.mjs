@@ -8,7 +8,7 @@ const environmentVariableName = type == 'new'
 const to = process.env[environmentVariableName]
 if (to) {
     try {
-        await createLineClient(startArea, returnArea).pushMessage({ to, messages: { type: 'text', text: 'hello' } })
+        await createLineClient(startArea, returnArea).pushMessage({ to, messages: [{ type: 'text', text: 'hello' }] })
     } catch (error) {
         console.error('Error in worker:', error)
     }

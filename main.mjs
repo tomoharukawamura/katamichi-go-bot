@@ -42,7 +42,7 @@ app.listen(port, async () => {
         to: process.env.LINE_USER_ID,
         messages: [{
           type: 'text',
-          text: JSON.stringify(error.body)
+          text: error.body ? JSON.stringify(error.body) : error
         }]
       })
     }

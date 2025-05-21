@@ -1,4 +1,5 @@
 import { Worker } from 'worker_threads';
+import { CarManager } from '../lib/car-manager.mjs';
 
 const areadata = [
   ['2','3'], 
@@ -13,8 +14,8 @@ const areadata = [
 
 const carData = {
   carName: 'パッソ',
-  startShop: 'トヨタレンタリース宮城　仙台空港店',
-  returnShop: 'トヨタモビリティサービス',
+  startShop: 'トヨタモビリティサービス羽田空港(国際線)店',
+  returnShop: 'トヨタモビリ',
   condition: '禁煙・8人乗',
   date: '2025/5/22 ~ 2025/5/25', 
   phone: '090-6388-3536', 
@@ -27,3 +28,7 @@ areadata.forEach(([startArea, returnArea]) => {
   console.log('push-message')
   new Worker('./lib/worker.mjs', { workerData: { startArea, returnArea, cars: [carData], type } })
 })
+
+const cm = new CarManager()
+await cm.getCars({ resetNewCars: false, resetSoldCars: false })
+console.log(cm.availableCars)

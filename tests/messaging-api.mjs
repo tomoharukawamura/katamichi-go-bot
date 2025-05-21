@@ -7,12 +7,12 @@ const areadata = [
   ['4','3'],
   ['4','5'],
   ['5','4'],
-  // ['5','3'],
-  // ['3','5'],
+  ['5','3'],
+  ['3','5'],
 ]
 
 const type = process.env.TYPE_FOR_TEST
 areadata.forEach(([startArea, returnArea]) => {
   console.log('push-message')
-  new Worker('./tests/worker-test.mjs', { workerData: { startArea, returnArea, type } })
+  new Worker('./lib/worker.mjs', { workerData: { startArea, returnArea, type } })
 })

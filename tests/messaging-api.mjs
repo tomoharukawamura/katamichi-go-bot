@@ -15,10 +15,10 @@ const areadata = [
 const carData = {
   carName: 'パッソ',
   startShop: 'トヨタモビリティサービス羽田空港(国際線)店',
-  returnShop: 'トヨタモビリ',
+  returnShop: 'トヨタレンタリース大阪（返却可能店舗）',
   condition: '禁煙・8人乗',
   date: '2025/5/22 ~ 2025/5/25', 
-  phone: '090-6388-3536', 
+  phone: '0746321020', 
   startArea: '2', 
   returnArea: '3' 
 }
@@ -29,6 +29,6 @@ areadata.forEach(([startArea, returnArea]) => {
   new Worker('./lib/worker.mjs', { workerData: { startArea, returnArea, cars: [carData], type } })
 })
 
-const cm = new CarManager()
-await cm.getCars({ resetNewCars: false, resetSoldCars: false })
-console.log(cm.availableCars)
+// const cm = new CarManager()
+// await cm.getCars({ resetNewCars: false, resetSoldCars: false })
+// console.log(cm.availableCars)

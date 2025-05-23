@@ -33,20 +33,20 @@ const main = async () => {
   }
 }
 
-// const startRoutine = async () => {
-//   await carManager.getCars({ isInit: true })
-//   cron.schedule('*/30 * * * * *', main)
-// }
+const startRoutine = async () => {
+  await carManager.getCars({ isInit: true })
+  cron.schedule('*/30 * * * * *', main)
+}
 
-// process.on('SIGINT', () => {
-//   console.log('SIGINT received. Exiting...');
-//   process.exit(0);
-// });
+process.on('SIGINT', () => {
+  console.log('SIGINT received. Exiting...');
+  process.exit(0);
+});
 
-// startRoutine()
-const start = performance.now()
-main()
-.then(() => {
-  const end = performance.now()
-  console.log(`Execution time: ${(end - start)} milliseconds`)
-})
+startRoutine()
+// const start = performance.now()
+// main()
+// .then(() => {
+//   const end = performance.now()
+//   console.log(`Execution time: ${(end - start)} milliseconds`)
+// })

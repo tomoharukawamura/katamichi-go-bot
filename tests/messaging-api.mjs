@@ -13,9 +13,9 @@ const areadata = [
 ]
 
 const carData = {
-  carName: 'アルファード　車両番号865',
-  startShop: 'トヨタモビリティサービス羽田空港(国際線)店',
-  returnShop: 'トヨタレンタリース大阪（返却可能店舗）',
+  carName: 'グランドキャビン　車両番号865',
+  startShop: 'トヨタモビリティサービス 羽田空港(国際線)店',
+  returnShop: 'トヨタレンタリース大阪',
   condition: '禁煙・8人乗',
   date: '2025/5/22 ~ 2025/5/25', 
   phone: '0746321020', 

@@ -13,7 +13,7 @@ const areadata = [
 ]
 
 const carData = {
-  carName: 'ヤリス',
+  carName: 'プリウスPHEV4545',
   startShop: 'トヨタモビリティサービス羽田空港(国際線)店',
   returnShop: 'トヨタレンタリース大阪（返却可能店舗）',
   condition: '禁煙・8人乗',
@@ -26,7 +26,7 @@ const carData = {
 const type = process.env.TYPE_FOR_TEST
 areadata.forEach(([startArea, returnArea]) => {
   console.log('push-message')
-  new Worker('./lib/worker.mjs', { workerData: { startArea, returnArea, cars: [...Array.from({ length: 5 })].map(_i => carData), type } })
+  new Worker('./lib/worker.mjs', { workerData: { startArea, returnArea, cars: [...Array.from({ length: 1 })].map(_i => carData), type } })
 })
 
 // const cm = new CarManager()

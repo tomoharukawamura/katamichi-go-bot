@@ -13,7 +13,7 @@ const areadata = [
 ]
 
 const carData = {
-  carName: 'プリウスPHEV4545',
+  carName: 'アルファード　車両番号865',
   startShop: 'トヨタモビリティサービス羽田空港(国際線)店',
   returnShop: 'トヨタレンタリース大阪（返却可能店舗）',
   condition: '禁煙・8人乗',

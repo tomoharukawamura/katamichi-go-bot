@@ -1,4 +1,3 @@
-import express from 'express'
 import { CarManager } from './lib/car-manager.mjs'
 import { Worker } from 'worker_threads'
 import { errorNotifyClient } from './lib/messaging-api-client.mjs'
@@ -8,23 +7,21 @@ const carManager = new CarManager()
 
 const main = async () => {
   try {
-    await carManager.getCars({ resetNewCars: true, resetSoldCars: true })
+    await carManager.getCars({ isInit: false })
     if (carManager.newCars.length) {
       const classifiedNewCars = carManager.classifyCars(carManager.newCars)
       const newCarWorkers = classifiedNewCars.map(cnc => 
-        new Worker('./lib/worker.mjs', { workerData: { ...cnc, type: 'new' }})
+        new Worker('./lib/worker.mjs', { workerData: { ...cnc, type: 'new' } })
         .on('error', error => { throw error })
       )
       carManager.newCars = []
     }
     if (carManager.soldOut.length) {
-      const classifiedSoldOutCars = carManager.classifyCars(carManager.soldOut)
-      const soldOutCarWorkers = classifiedSoldOutCars.map(csoc => 
-        new Worker('./lib/worker.mjs', { workerData: { ...csoc, type: 'soldOut' }})
-        .on('error', error => { throw error })
-      )
+      new Worker('./lib/worker.mjs', { workerData: { startArea: '0', returnArea: '0', cars: carManager.soldOut, type: 'soldOut' }})
+      .on('error', error => { throw error })
       carManager.soldOut = []
     }
+ 
   } catch (error) {
     await errorNotifyClient.pushMessage({
       to: process.env.LINE_USER_ID,
@@ -36,16 +33,20 @@ const main = async () => {
   }
 }
 
-const startRoutine = async () => {
-  // 毎日午前7時に開始し、午後9時に停止する方法
-  await carManager.getCars({ resetNewCars: false, resetSoldCars: false })
+// const startRoutine = async () => {
+//   await carManager.getCars({ isInit: true })
+//   cron.schedule('*/30 * * * * *', main)
+// }
 
-  cron.schedule('*/30 * * * * *', main)
-}
+// process.on('SIGINT', () => {
+//   console.log('SIGINT received. Exiting...');
+//   process.exit(0);
+// });
 
-process.on('SIGINT', () => {
-  console.log('SIGINT received. Exiting...');
-  process.exit(0);
-});
-
-startRoutine()
+// startRoutine()
+const start = performance.now()
+main()
+.then(() => {
+  const end = performance.now()
+  console.log(`Execution time: ${(end - start)} milliseconds`)
+})

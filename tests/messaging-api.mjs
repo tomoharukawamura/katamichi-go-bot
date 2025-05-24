@@ -14,13 +14,14 @@ const areadata = [
 
 const carData = {
   carName: 'グランドキャビン　車両番号865',
-  startShop: 'トヨタモビリティサービス 羽田空港(国際線)店',
+  startShop: 'トヨタレンタリース福島 いわき平店',
   returnShop: 'トヨタレンタリース大阪',
   condition: '禁煙・8人乗',
   date: '2025/5/22 ~ 2025/5/25', 
   phone: '0746321020', 
   startArea: '2', 
-  returnArea: '3' 
+  returnArea: '3' ,
+  type: 'new'
 }
 
 const type = process.env.TYPE_FOR_TEST

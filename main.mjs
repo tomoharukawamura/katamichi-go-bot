@@ -35,7 +35,7 @@ const main = async () => {
       to: process.env.LINE_USER_ID,
       messages: [{
         type: 'text',
-        text: error.body ? JSON.stringify(error.body) : error
+        text: 'エラーが発生しました。管理者に連絡してください。LOGを確認してください。'
       }]
     })
   }

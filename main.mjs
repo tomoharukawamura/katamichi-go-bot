@@ -10,8 +10,8 @@ const carManager = new CarManager()
 const main = async () => {
   try {
     await carManager.getCars({ isInit: false })
-    console.log(CarManager.availableCars)
-    console.log(CarManager.notAvailableCars)
+    console.log(carManager.availableCars)
+    console.log(carManager.notAvailableCars)
     if (carManager.newCars.length) {
       const classifiedNewCars = carManager.classifyCars(carManager.newCars)
       const newCarWorkers = classifiedNewCars.map(cnc => 

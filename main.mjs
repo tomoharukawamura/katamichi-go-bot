@@ -13,7 +13,7 @@ const main = async () => {
     if (carManager.newCars.length) {
       const classifiedNewCars = carManager.classifyCars(carManager.newCars)
       const newCarWorkers = classifiedNewCars.map(cnc => 
-        new Worker('./lib/worker.mjs', { workerData: { ...cnc, type: 'new' } })
+        new Worker('./lib/worker.mjs', { workerData: cnc })
         .on('error', error => { throw error })
       )
       console.log(carManager.newCars)
@@ -21,7 +21,7 @@ const main = async () => {
     }
     if (carManager.soldOut.length) {
       await slackApp.client.chat.postMessage({
-        channel: process.env.SLACK_CHANNEL_ID_SOLD_OUT,
+        channel: process.env.SLACK_CHANNEL_ID_SOLD,
         attachments: carManager.soldOut.map(createAttachments)
       })
       console.log(carManager.soldOut)
@@ -35,7 +35,7 @@ const main = async () => {
       to: process.env.LINE_USER_ID,
       messages: [{
         type: 'text',
-        text: 'エラーが発生しました。管理者に連絡してください。LOGを確認してください。'
+        text: 'エラーが発生しました。LOGを確認してください。'
       }]
     })
   }

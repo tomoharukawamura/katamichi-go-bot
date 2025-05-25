@@ -16,7 +16,6 @@ const main = async () => {
         new Worker('./lib/worker.mjs', { workerData: cnc })
         .on('error', error => { throw error })
       )
-      console.log(carManager.newCars)
       carManager.newCars = []
     }
     if (carManager.soldOut.length) {
@@ -24,10 +23,8 @@ const main = async () => {
         channel: process.env.SLACK_CHANNEL_ID_SOLD,
         attachments: carManager.soldOut.map(createAttachments)
       })
-      console.log(carManager.soldOut)
       carManager.soldOut = []
     }
- 
   } catch (error) {
     carManager.newCars = []
     carManager.soldOut = []
@@ -42,6 +39,8 @@ const main = async () => {
 }
 
 const startRoutine = async () => {
+  carManager.availableCars.clear()
+  carManager.notAvailableCars.clear()
   await carManager.getCars({ isInit: true })
   cron.schedule('*/30 * * * * *', main)
 }

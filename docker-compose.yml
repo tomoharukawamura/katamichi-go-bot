@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  redis_server:
+    container_name: katamichi-go-notify-redis_server
+    image: redis:8.0.1-alpine
+    ports:
+      - "16379:6379"
+    volumes:
+      - katamichi-go-notify:/data
+
+volumes:
+  katamichi-go-notify:

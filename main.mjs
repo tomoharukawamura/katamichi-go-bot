@@ -1,7 +1,9 @@
 import { CarManager } from './lib/car-manager.mjs'
 import { Worker } from 'worker_threads'
 import { errorNotifyClient } from './lib/messaging-api-client.mjs'
+import { app as slackApp } from './lib/slack-bot-app.cjs'
 import cron from 'node-cron'
+import { createAttachments } from './lib/create-attachments.mjs'
 
 const carManager = new CarManager()
 
@@ -14,11 +16,15 @@ const main = async () => {
         new Worker('./lib/worker.mjs', { workerData: { ...cnc, type: 'new' } })
         .on('error', error => { throw error })
       )
+      console.log(carManager.newCars)
       carManager.newCars = []
     }
     if (carManager.soldOut.length) {
-      new Worker('./lib/worker.mjs', { workerData: { startArea: '0', returnArea: '0', cars: carManager.soldOut, type: 'soldOut' }})
-      .on('error', error => { throw error })
+      await slackApp.client.chat.postMessage({
+        channel: process.env.SLACK_CHANNEL_ID_SOLD_OUT,
+        attachments: carManager.soldOut.map(createAttachments)
+      })
+      console.log(carManager.soldOut)
       carManager.soldOut = []
     }
  

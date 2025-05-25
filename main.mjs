@@ -4,19 +4,37 @@ import { errorNotifyClient } from './lib/messaging-api-client.mjs'
 import { app as slackApp } from './lib/slack-bot-app.cjs'
 import cron from 'node-cron'
 import { createAttachments } from './lib/create-attachments.mjs'
+import { redisClient } from './lib/redis-client.mjs'
 
 const carManager = new CarManager()
 
 const main = async () => {
   try {
     await carManager.getCars({ isInit: false })
+    const tsData = await redisClient.hgetall('car_ts_data')
     if (carManager.newCars.length) {
-      const classifiedNewCars = carManager.classifyCars(carManager.newCars)
-      const newCarWorkers = classifiedNewCars.map(cnc => 
-        new Worker('./lib/worker.mjs', { workerData: cnc })
-        .on('error', error => { throw error })
-      )
-      carManager.newCars = []
+      Promise.all(carManager.newCars.map(car => 
+        new Promise((resolve) => {
+          const ts = tsData[car.carName] ?? null
+          new Worker('./lib/worker.mjs', { workerData: { car , ts } })
+          .on('error', error => { throw error })
+          .on('message', (data) => {
+            tsData[car.carName] = data.ts
+          })
+          .on('exit', (code) => {
+            if (code == 0) {
+              resolve()
+            }
+          });
+        })
+      ))
+      .then(async () => {
+        await redisClient.hset('car_ts_data', tsData)
+      })
+      .finally(async () => {
+        carManager.newCars = []
+        await redisClient.quit()
+      })
     }
     if (carManager.soldOut.length) {
       await slackApp.client.chat.postMessage({

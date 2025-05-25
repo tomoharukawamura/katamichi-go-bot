@@ -20,12 +20,6 @@ const main = async () => {
       carManager.newCars = []
     }
     if (carManager.soldOut.length) {
-      const workerData = {
-        startArea: '',
-        returnArea: '',
-        cars: carManager.soldOut,
-        type: 'soldOut'
-      }
       await slackApp.client.chat.postMessage({
         channel: process.env.SLACK_CHANNEL_ID_SOLD_OUT,
         attachments: carManager.soldOut.map(createAttachments)

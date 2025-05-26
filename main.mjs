@@ -67,7 +67,8 @@ const startRoutine = async () => {
   cron.schedule('*/30 * * * * *', main)
 }
 
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
+  await redisClient.quit()
   console.log('SIGINT received. Exiting...');
   process.exit(0);
 });

@@ -30,7 +30,6 @@ const notifyNewCars = async () => {
   })
   .finally(async () => {
     carManager.newCars = []
-    await redisClient.quit()
   })
 }
 

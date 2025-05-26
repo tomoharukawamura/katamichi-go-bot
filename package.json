@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx env-cmd -f .env node ./tests/messaging-api.mjs",
+    "test:massaging": "npx env-cmd -f .env node ./tests/messaging-api.mjs",
+    "test:soldout-reactions": "npx env-cmd -f .env node ./scripts/add-soldout-reactions.mjs",
     "build": "npx env-cmd -f .env node main.mjs",
     "build:bot": "npx env-cmd -f .env node bot-server.mjs",
     "expose:bot": "npx localtunnel --port 3000"

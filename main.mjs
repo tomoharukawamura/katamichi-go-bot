@@ -60,11 +60,33 @@ const main = async () => {
   }
 }
 
+const deleteUnnecessaryKeys = async () => { 
+  try {
+    // carManagerリセット
+    carManager.reset()
+    await carManager.getCars({ isInit: true })
+    // キー削除
+    const redisKeys = await redisClient.hkeys('car_ts_data')
+    const deleteKeys = redisKeys.filter(k => !carManager.availableCars.has(k) && !carManager.notAvailableCars.has(k))
+    Promise.all(deleteKeys.map(key => (async () => { await redisClient.hdel('car_ts_data', key) })))
+  } catch (error) {
+    console.error('Error occurred while deleting unnecessary keys:', error);
+    await errorNotifyClient.pushMessage({
+      to: process.env.LINE_USER_ID,
+      messages: [{
+        type: 'text',
+        text: '不要なキーの削除中にエラーが発生しました。LOGを確認してください。'
+      }]
+    })
+  }
+}
+
 const startRoutine = async () => {
-  carManager.availableCars.clear()
-  carManager.notAvailableCars.clear()
   await carManager.getCars({ isInit: true })
+  // 30sおきに実行
   cron.schedule('*/30 * * * * *', main)
+  // 毎日深夜0時にredisの不要なキーを削除
+  cron.schedule('0 0 * * *', deleteUnnecessaryKeys)
 }
 
 process.on('SIGINT', async () => {

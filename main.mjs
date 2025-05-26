@@ -63,11 +63,14 @@ const main = async () => {
 const deleteUnnecessaryKeys = async () => { 
   try {
     // carManagerリセット
+    console.log('reset carManager')
     carManager.reset()
     await carManager.getCars({ isInit: true })
     // キー削除
     const redisKeys = await redisClient.hkeys('car_ts_data')
     const deleteKeys = redisKeys.filter(k => !carManager.availableCars.has(k) && !carManager.notAvailableCars.has(k))
+    if (!deleteKeys.length) return
+    console.log('delete unnecessary keys:' + deleteKeys.join('\n'))
     Promise.all(deleteKeys.map(key => (async () => { await redisClient.hdel('car_ts_data', key) })))
   } catch (error) {
     console.error('Error occurred while deleting unnecessary keys:', error);

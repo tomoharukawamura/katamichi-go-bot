@@ -22,7 +22,7 @@ const carData = {
   phone: '0746321020', 
   startArea: '2', 
   returnArea: '3' ,
-  type: 'updated',
+  type: 'soldOut',
 }
 
 const car2 = {
@@ -39,7 +39,7 @@ const car2 = {
 
 const type = process.env.TYPE_FOR_TEST;
 const tsData = await redisClient.hgetall('car_ts_data')
-Promise.all([carData, carData, carData, carData, carData].map(car => 
+Promise.all([carData].map(car => 
   new Promise((resolve) => {
     new Worker('./lib/worker.mjs', { workerData: { car, ts: tsData[car.carName] || null } })
     .on('error', error => { throw error })

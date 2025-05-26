@@ -37,7 +37,6 @@ const notifyNewCars = async () => {
 const main = async () => {
   try {
     await carManager.getCars({ isInit: false })
-    const tsData = await redisClient.hgetall('car_ts_data')
     if (carManager.newCars.length) {
       await notifyNewCars()
     }

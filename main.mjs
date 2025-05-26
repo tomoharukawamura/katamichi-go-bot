@@ -46,6 +46,7 @@ const main = async () => {
   } catch (error) {
     carManager.newCars = []
     carManager.soldOut = []
+    console.error('Error occurred:', error);
     await errorNotifyClient.pushMessage({
       to: process.env.LINE_USER_ID,
       messages: [{

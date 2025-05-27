@@ -2,3 +2,5 @@
 ./test.mjs
 node_modules
 tmp.txt
+secret.pem
+public.pem

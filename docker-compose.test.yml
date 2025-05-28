@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  task_server_test:
+    container_name: katamichi-go-notify-task_server_test
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:4545"
+    env_file:
+      - .env
+    depends_on:
+      - redis_server_test
+    volumes:
+      - .:/app
+      - /app/node_modules
+  redis_server_test:
+    container_name: katamichi-go-notify-redis_server_test
+    image: redis:8.0.1-alpine
+    ports:
+      - "26379:6379"
+    volumes:
+      - katamichi-go-notify-test:/data
+
+volumes:
+  katamichi-go-notify-test:

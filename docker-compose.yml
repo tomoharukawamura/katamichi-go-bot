@@ -12,6 +12,7 @@ services:
       - .env
     depends_on:
       - redis_server
+    restart: always
     volumes:
       - .:/app
       - /app/node_modules

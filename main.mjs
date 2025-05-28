@@ -51,6 +51,8 @@ const notifySoldCars = async (tsData) => {
 const main = async () => {
   try {
     await carManager.getCars({ isInit: false })
+    if (!carManager.newCars.length && !carManager.soldOut.length) return
+    
     const tsData = await redisClient.hgetall('car_ts_data')
     if (carManager.newCars.length) {
       await notifyNewCars(tsData)

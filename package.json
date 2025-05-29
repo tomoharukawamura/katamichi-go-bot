@@ -6,8 +6,8 @@
   "scripts": {
     "test:massaging": "npx env-cmd -f .env node ./tests/messaging-api.mjs",
     "test:soldout-reactions": "npx env-cmd -f .env node ./scripts/add-soldout-reactions.mjs",
-    "build": "npx env-cmd -f .env node main.mjs",
-    "build:bot": "npx env-cmd -f .env node bot-server.mjs",
+    "build": "node main.mjs",
+    "build:handler": "node event-handler.mjs",
     "expose:bot": "npx localtunnel --port 3000"
   },
   "keywords": [],

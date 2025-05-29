@@ -3,6 +3,9 @@ import { Worker } from 'worker_threads'
 import { errorNotifyClient } from './lib/messaging-api-client.mjs'
 import cron from 'node-cron'
 import { redisClient } from './lib/redis-client.mjs'
+import { app as slackApp } from './lib/slack-bot-app.cjs'
+import { startHandler } from './event-handler.mjs'
+import { start } from 'repl'
 
 const carManager = new CarManager()
 
@@ -99,6 +102,9 @@ const deleteUnnecessaryKeys = async () => {
 }
 
 const startRoutine = async () => {
+  startHandler()
+  await slackApp.start(process.env.PORT || 3000)
+  console.log(`Slack app is running on port ${process.env.PORT || 3000}`);
   console.log('Start routine')
   await carManager.getCars({ isInit: true })
   // 30sおきに実行

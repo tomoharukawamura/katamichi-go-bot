@@ -8,7 +8,6 @@ ARG NPM_VERSION=10.9.2
 # 環境変数の設定
 ENV NODE_ENV=development
 ENV PATH=/app/node_modules/.bin:$PATH
-ENV PORT=4545
 
 # 作業ディレクトリを作成
 WORKDIR /app
@@ -35,6 +34,7 @@ RUN addgroup -g 1001 -S notify_bot \
 
 # アプリケーションファイルをコピー
 COPY --chown=notify_bot_user:notify_bot main.mjs app/
+COPY --chown=notify_bot_user:notify_bot event-handler.mjs app/
 COPY --chown=notify_bot_user:notify_bot lib app/
 COPY --chown=notify_bot_user:notify_bot json app/
 

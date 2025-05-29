@@ -99,6 +99,7 @@ const deleteUnnecessaryKeys = async () => {
 }
 
 const startRoutine = async () => {
+  console.log('Start routine')
   await carManager.getCars({ isInit: true })
   // 30sおきに実行
   cron.schedule('*/30 * * * * *', main)

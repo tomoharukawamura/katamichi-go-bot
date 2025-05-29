@@ -1,6 +1,21 @@
 version: "3.9"
 
 services:
+  task_server:
+    container_name: katamichi-go-notify-task_server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT}:4545"
+    env_file:
+      - .env
+    depends_on:
+      - redis_server
+    restart: always
+    volumes:
+      - .:/app
+      - /app/node_modules
   redis_server:
     container_name: katamichi-go-notify-redis_server
     image: redis:8.0.1-alpine

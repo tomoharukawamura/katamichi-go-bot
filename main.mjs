@@ -110,7 +110,7 @@ const startRoutine = async () => {
   // 30sおきに実行
   cron.schedule('*/30 * * * * *', main)
   // 毎日深夜0時にredisの不要なキーを削除
-  cron.schedule('0 0 * * *', deleteUnnecessaryKeys)
+  // cron.schedule('0 0 * * *', deleteUnnecessaryKeys)
 }
 
 process.on('SIGINT', async () => {

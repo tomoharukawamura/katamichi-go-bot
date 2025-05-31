@@ -5,7 +5,6 @@ import cron from 'node-cron'
 import { redisClient } from './lib/redis-client.mjs'
 import { app as slackApp } from './lib/slack-bot-app.cjs'
 import { startHandler } from './event-handler.mjs'
-import { start } from 'repl'
 
 const carManager = new CarManager()
 
@@ -26,7 +25,7 @@ const notifyNewCars = async (tsData) => {
     })
   ))
   .then(async () => {
-    await redisClient.hset('car_ts_data', tsData)
+    await redisClient.hset('car_ts_data', tsData, 'EX', 60 * 60 * 24 * 14)
   })
   .finally(async () => {
     carManager.newCars = []

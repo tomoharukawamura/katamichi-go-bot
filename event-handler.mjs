@@ -42,7 +42,7 @@ export const startHandler = () => {
 
     const { ts } = await client.chat.postMessage({
       channel: process.env.SLACK_CHANNEL_ID_SEARCH,
-      text: `<@${command.user_id}>さんが「${from}」から「${to}」への車を検索しました。`
+      text: `<@${command.user_id}>さんが「${from}」から「${to}」への車を検索しました。結果はスレッド参照。`
     })
     if (!results.length) {
       await client.chat.postMessage({

@@ -1,6 +1,6 @@
 import { Worker } from 'worker_threads';
 import { CarManager } from '../lib/car-manager.mjs';
-import { redisClient } from '../lib/redis-client.mjs';
+// import { redisClient } from '../lib/redis-client.mjs';
 
 const areadata = [
   ['2','3'], 
@@ -38,8 +38,8 @@ const car2 = {
 }
 
 const type = process.env.TYPE_FOR_TEST;
-const tsData = await redisClient.hgetall('car_ts_data')
-Promise.all([carData].map(car => 
+const tsData = {}
+Promise.all([car2].map(car => 
   new Promise((resolve) => {
     new Worker('./lib/worker.mjs', { workerData: { car, ts: tsData[car.carName] || null } })
     .on('error', error => { throw error })
@@ -52,10 +52,11 @@ Promise.all([carData].map(car =>
       }
     });
   })
-)).then(async () => {
-  await redisClient.hset('car_ts_data', tsData);
-  await redisClient.quit();
-})
+))
+// .then(async () => {
+//   await redisClient.hset('car_ts_data', tsData);
+//   await redisClient.quit();
+// })
 // carManager.newCars = []
 // if (carManager.soldOut.length) {
 //   await slackApp.client.chat.postMessage({

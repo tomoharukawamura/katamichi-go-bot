@@ -25,7 +25,7 @@ const notifyNewCars = async (tsData) => {
     })
   ))
   .then(async () => {
-    await redisClient.hset('car_ts_data', tsData, 'EX', 60 * 60 * 24 * 14)
+    await redisClient.hset('car_ts_data', tsData)
   })
   .finally(async () => {
     carManager.newCars = []

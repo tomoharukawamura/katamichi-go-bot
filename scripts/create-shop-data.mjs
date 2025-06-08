@@ -10,6 +10,7 @@ const exec = async (area) => {
   const res = await fetch(`${shopPageLinkPrefix}${area}.html`)
   const html = await res.text()
   const $ = cheerio.load(html)
+  const areaData = new Object()
   $('div.inner').find('li.shop').each((_, elem) => {
     const shopName = $(elem).find('div.shop__name > p.val').text().trim()
     const shopAddress = $(elem).find('div.shop__address > p.val').text().trim()
@@ -18,12 +19,13 @@ const exec = async (area) => {
     $(elem).find('div.shop__time > div.vals > .val').each((_, val) => {
       shopOpenTime.push(`${$(val).find('span').first().text().trim().replace('-', '〜')}　${$(val).find('span').last().text().trim().replace('-', '〜')}`)
     })
-    json[shopName] = {
+    areaData[shopName] = {
       address: shopAddress,
       phone: shopPhone,
       openTime: shopOpenTime,
     }
-  }) 
+  })
+  json[area] = areaData 
 }
 
 for (const k of Object.keys(area)) {

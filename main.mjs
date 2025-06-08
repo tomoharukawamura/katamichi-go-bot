@@ -9,7 +9,7 @@ import { startHandler } from './event-handler.mjs'
 const carManager = new CarManager()
 
 const notifyNewCars = async (tsData) => {
-  Promise.all(carManager.newCars.map(car => 
+  Promise.all(Array.from(carManager.newCars.values()).map(car => 
     new Promise((resolve) => {
       const ts = tsData[car.carName] ?? null
       new Worker('./lib/worker.mjs', { workerData: { car , ts } })
@@ -28,12 +28,12 @@ const notifyNewCars = async (tsData) => {
     await redisClient.hset('car_ts_data', tsData)
   })
   .finally(async () => {
-    carManager.newCars = []
+    carManager.newCars.clear()
   })
 }
 
 const notifySoldCars = async (tsData) => {
-  Promise.all(carManager.soldOut.map(car => 
+  Promise.all(Array.from(carManager.soldOut.values()).map(car => 
     new Promise((resolve) => {
       const ts = tsData[car.carName] ?? null
       new Worker('./lib/worker.mjs', { workerData: { car , ts } })
@@ -46,25 +46,25 @@ const notifySoldCars = async (tsData) => {
     })
   ))
   .finally(async () => {
-    carManager.soldOut = []
+    carManager.soldOut.clear()
   })
 }
 
 const main = async () => {
   try {
     await carManager.getCars({ isInit: false })
-    if (!carManager.newCars.length && !carManager.soldOut.length) return
+    if (!carManager.newCars.size() && !carManager.soldOut.size()) return
     
     const tsData = await redisClient.hgetall('car_ts_data')
-    if (carManager.newCars.length) {
+    if (carManager.newCars.size()) {
       await notifyNewCars(tsData)
     }
-    if (carManager.soldOut.length) {
+    if (carManager.soldOut.size()) {
       await notifySoldCars(tsData)
     }
   } catch (error) {
-    carManager.newCars = []
-    carManager.soldOut = []
+    carManager.newCars.clear()
+    carManager.soldOut.clear()
     console.error('Error occurred:', error);
     await errorNotifyClient.pushMessage({
       to: process.env.LINE_USER_ID,

@@ -53,13 +53,13 @@ const notifySoldCars = async (tsData) => {
 const main = async () => {
   try {
     await carManager.getCars({ isInit: false })
-    if (!carManager.newCars.size() && !carManager.soldOut.size()) return
+    if (!carManager.newCars.size && !carManager.soldOut.size) return
     
     const tsData = await redisClient.hgetall('car_ts_data')
-    if (carManager.newCars.size()) {
+    if (carManager.newCars.size) {
       await notifyNewCars(tsData)
     }
-    if (carManager.soldOut.size()) {
+    if (carManager.soldOut.size) {
       await notifySoldCars(tsData)
     }
   } catch (error) {

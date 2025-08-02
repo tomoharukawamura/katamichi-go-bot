@@ -107,7 +107,7 @@ const startRoutine = async () => {
   console.log('Start routine')
   await carManager.getCars({ isInit: true })
   // 30sおきに実行
-  cron.schedule('*/30 * * * * *', main)
+  cron.schedule('*/5 * * * * *', main)
   // 毎日深夜0時にredisの不要なキーを削除
   // cron.schedule('0 0 * * *', deleteUnnecessaryKeys)
 }
